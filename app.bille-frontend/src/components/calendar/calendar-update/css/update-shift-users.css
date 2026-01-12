@@ -1,0 +1,53 @@
+#shifted-users{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 6px;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    width: 90%;
+}
+.user-capsule{
+    width: min-content;
+    display: flex;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 50px;
+    height: 6vh;
+    padding: 0;
+    padding-left: 5px;
+}
+.user-capsule p{
+    margin: 0;
+    padding: 4px;
+
+}
+.user-capsule button{
+    border: none;
+    padding: 4px;
+    border-radius: 50px;
+    height: 6vh;
+    width: 6vh;
+}
+.user-capsule button:hover{
+    cursor: pointer;
+}
+.select-add-user{
+    display: flex;
+    background-color: white;
+    color: black;
+    height: min-content;
+    width: min-content;
+}
+.select-add-user option{
+    color: black;
+}
+.subscribe-benevole{
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+    gap: 6px;
+}

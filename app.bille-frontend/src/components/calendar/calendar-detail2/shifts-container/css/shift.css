@@ -1,0 +1,75 @@
+/************* shifts *********************/
+
+.shiftZone{
+    border: 1px solid whitesmoke;
+    width: 100%;
+    margin: 0;
+    margin-bottom: 10px;
+}
+.shift_times{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    color: #37474f;
+    background-color: white;
+}
+.shiftNotFull{
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    border-radius: 50px;
+    background-color: red;
+    color: white;
+    height: 25px;
+    width: 25px;
+    margin: 0;
+}
+#shifts_container h3{
+    margin: 10px;
+}
+/************* user zone in shifts *********************/
+.usersZone{
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+.subscribeBt{
+    border: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 20px;  
+    padding-right: 20px;
+    border-radius: 50px;
+    background-color: #1e88e5;
+    color: white;
+    margin: auto;
+}
+.bt-subs{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+.userShift{
+    border: none;
+    border-radius: 50px;
+    background-color: #ef6c00;
+    padding: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+#usersNb{
+    text-align: center;
+    width: 20%;
+    border: 2px solid white;
+    border-top: none;
+    margin: left;
+    padding: 10px;
+    border-radius: 0 0 10px 0;
+}
+#usersNb p{
+    margin: 0;
+}

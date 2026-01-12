@@ -1,0 +1,16 @@
+.stickerBlue{
+    background-color: #ffab00;
+    color: #282c34;
+    width: max-content;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 1.5%;
+    padding-bottom: 1.5%;
+    font-size: large;
+    border-radius: 60px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin:10px;
+    font-weight: bold;
+}

@@ -1,0 +1,53 @@
+.users-extra{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.user-firstname{
+    width: min-content;
+}
+.subscr-user{
+    padding: 10px;
+    border: none;
+    background-color: #1e88e5;
+    color: white;
+}
+.extra-tit{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.lin{
+    border: none;
+    height: 3px;
+    background-color: #1e88e5;
+}
+.subscribe{
+    border: 2px solid transparent;
+    animation: move 1s ease-in-out infinite;
+}
+@keyframes move {
+   0% { 
+    transform: rotate(0deg); 
+    border: 2px solid transparent;
+    color: black;
+  }
+  25% { 
+    transform: rotate(10deg);
+    border: 2px solid #ff9800;
+    color: white;
+  } 
+  75% { 
+    transform: rotate(-10deg);
+    border: 2px solid #ff9800;
+    color: white;
+  }
+  100% { 
+    transform: rotate(0deg); 
+    border: 2px solid transparent;
+    color: black;
+ }
+}

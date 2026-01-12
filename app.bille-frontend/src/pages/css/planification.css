@@ -1,0 +1,95 @@
+
+
+#formPlanif{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+#firstSection{
+    flex-wrap: wrap;
+}
+#warnMsg{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #e2b659;
+    font-style: italic;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: justify;
+}
+#msg{
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: justify;
+}
+.selectStatus{
+    display: none;
+}
+#dayWeekTemplate,
+#yearInput,
+#addHoliday{
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+#addHolidays > button{
+    text-align: center;
+}
+#yearInput > input{
+    text-align: center;
+}
+.daySection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.daySection > p{
+    font-weight: bold;
+    height: min-content;
+}
+.closedValue{
+    background-color: gray;
+    color: white;
+    border-radius: 5px;
+}
+.openValue{
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+}
+hr{
+    margin: 0;
+    padding: 0;
+}
+h5{
+    margin: auto;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 40%;
+}
+#submitBt{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    width: 20%;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.optionBt{
+    background-color: white;
+    color: black;
+}
+@media (min-width: 640px) {
+    #dayWeekTemplate,
+    #yearInput,
+    #addHoliday{
+        margin: auto;
+        width: 20%;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+}

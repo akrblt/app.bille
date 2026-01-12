@@ -1,0 +1,12 @@
+#responsable-select{
+    display: flex;
+    justify-content: center;
+    width: min-content;
+}
+#responsable-container{
+    margin: 7px;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}

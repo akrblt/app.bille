@@ -1,0 +1,59 @@
+import { FunctionComponent, useEffect, useState } from "react";
+import GetRequests from "../../services/getters";
+import MonthGestion from "../../helpers/month-gestion";
+import "./recap.css";
+
+type Props = {
+  dataOfMonth: any;
+};
+type month = {
+    nbr: number,
+    label: string
+}
+const RecapDetails: FunctionComponent<Props> = ({ dataOfMonth }) => {
+  const [userList, setUserList] = useState<any[]>([]);
+  const [monthList, setMonthList] = useState<month[]>([]);
+  const [selectedYear, setSelectedYear] = useState<number>(2025)
+
+  useEffect(() => {
+    const setData = async () => {
+      const allUsers = await GetRequests.getAllUsers();
+      const monthes = MonthGestion.monthArray()
+      setUserList(allUsers);
+      setMonthList(monthes)
+    };
+    setData();
+  }, [dataOfMonth]);
+
+  const allRecaps = await Promise.all(
+    months.flatMap((month) => 
+        allUsers.map(async (user) => ({
+            userId: user.idUser,
+            month: month.nbr,
+            status: await GetRequests.getUserRecap(user.idUser, month.nbr, selectedYear),
+        })
+        ))
+    );
+
+  return (
+    <table>
+        {
+        
+           /* Promise.all(monthList.map(async (month: month) => {
+                const recap = await Promise.all(userList.map(async (user: any) => {    
+                    const userStatus: string = await GetRequests.getUserRecap(user.idUser, month.nbr, selectedYear)      
+                    return (
+                        <tr>
+                            { userStatus }
+                        </tr>
+                    )
+                }))
+                return recap
+            }))
+        }*/
+        }
+    </table>
+  )
+}
+
+export default RecapDetails;

@@ -1,0 +1,46 @@
+.title-shift{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+#startDate,
+#endDate{
+    width: min-content;
+    height: min-content;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin: 0;
+    padding: 6px;
+}
+#update-shift-content{
+    border: 1px solid white;
+    margin: 6px;
+}
+#container-maxUsers{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 6px;
+}
+#maxUsers{
+    background-color: white;
+    width: 10%;
+    height: min-content;
+    padding: 6px;
+    text-align: center;
+    margin: 0;
+}
+.delete-shift-bt{
+    width: 50%;
+    background-color: #f0574f;
+    text-align: center;
+    padding: 5px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.delete-shift-bt:hover{
+    cursor: pointer;
+}

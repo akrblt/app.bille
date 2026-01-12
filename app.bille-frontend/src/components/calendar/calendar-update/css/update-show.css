@@ -1,0 +1,21 @@
+#warning-message{
+    width: 100%;
+    color: red;
+    text-align: center;
+    margin-top: 0;
+}
+#confirm-show-update{
+    margin: 7px;
+    text-align: center;
+}
+#confirm-bt-show{
+    margin: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #66bb6a ;
+    color: black;
+}
+#confirm-bt-show:hover{
+    cursor: pointer;
+}

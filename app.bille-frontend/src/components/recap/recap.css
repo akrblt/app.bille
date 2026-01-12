@@ -1,0 +1,167 @@
+/*#recap-details-component, table{
+    width: 100vw;
+}
+table tr{ 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+.case{
+    width: 50px;
+    border: 1px solid black;
+}
+.userCase{
+    width: 120px;
+    margin: 0;
+    background-color: #43a047;
+}
+.date{
+    background-color: #43a047 ;
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+.subCase{
+    display: flex;
+    flex-direction: column;
+}*/
+
+/* Container */
+.recap-container {
+  overflow-x: auto;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Table */
+.recap-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+}
+
+.recap-table th,
+.recap-table td {
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  padding: 6px;
+  min-width: 30px;
+}
+
+/* Header styles */
+.date-title {
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  border-color: #1e3a8a;
+}
+
+.user-column {
+  background: #1e40af;
+  color: white;
+  font-weight: 600;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+/* Rotate header labels */
+.rotate {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  padding: 4px;
+  font-size: 12px;
+  background: #3b82f6;
+  color: white;
+}
+
+/* User rows */
+.user-name {
+  background: #f1f5f9;
+  font-weight: 500;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.user-value {
+  color: #334155;
+  background: #ffffff;
+  transition: background 0.2s;
+}
+
+.user-value:hover {
+  background: #e0f2fe;
+}
+
+/* Scroll behavior */
+.recap-container::-webkit-scrollbar {
+  height: 8px;
+}
+.recap-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 4px;
+}
+.valid{
+  background-color: #43a047;
+  border: 2px solid #1b5e20;
+  color: #1b5e20;
+}
+.middle{
+  background-color: #f57f17 ;
+  border: 2px solid #bf360c;
+  color: #bf360c;
+}
+.not-valid{
+  background-color: #e53935;  
+  border: 2px solid #b71c1c ;
+  color: #b71c1c ;
+}
+.user-line:hover{
+  border-top: 4px solid #311b92;
+  border-bottom: 4px solid #311b92;
+}
+.recap-table{
+  margin: auto;
+  width: 90%;
+}
+#handleYearRecap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+.year-labl{
+  text-align: center;
+}
+.year-bt{
+  padding: 10px;
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+/*
+.dateTitle{
+    border: 2px solid red;
+}
+.rotate{  
+    margin: 0;
+    padding: 0;
+  transform-origin: 0 0;
+  transform: rotate(90deg);
+  height: min-content;
+  width: min-content;
+}
+.userValue{
+    border: 2px solid violet;
+    width: 30px;
+}
+.emptyCase{
+    width: 100px;
+}
+    */

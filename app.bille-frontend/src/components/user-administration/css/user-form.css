@@ -1,0 +1,59 @@
+#user-form-container{
+    width: 50%;
+    border: 2px solid #f2e205;
+    color: black;
+}
+#container-close-user{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    padding: 10px;
+}   
+#close-user{
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 7px;
+    border-radius: 5px;
+}
+#close-user:hover{
+    cursor: pointer;
+}
+#adminLevel{
+    color: black;
+    display: flex;
+}
+.user-title{
+    width: 50%;
+    padding: 10px;
+    border: 1px solid white;
+    color: white;
+    background-color: #008f8c;
+}
+.user-title-opened{
+    padding: 10px;
+    border: 1px solid white;
+    color: black;
+    background-color: #f2e205;
+}
+.user-title:hover{
+    cursor: pointer;
+    background-color: #015958;
+}
+.user-field{
+    text-align: center;
+}
+.user-bt{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+#confirm-zone{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}

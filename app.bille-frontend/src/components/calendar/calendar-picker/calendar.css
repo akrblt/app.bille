@@ -1,0 +1,145 @@
+@media screen and (max-width: 768px){
+    #complete-calendar-container{
+        width: 100%;
+    }
+}
+#complete-calendar-container{
+    height: 92vh;
+    width: 50%;
+    margin-top: 8vh;
+}
+#calendarBtContainer{
+    margin-top: 2.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+#monthLabel{
+    display: flex;
+    justify-content: center;
+    width: min-content;
+    padding: 5px;
+    text-align: center;
+    padding: 5px;
+    width: 40%;
+}
+#calendarContainer{
+    margin: 2.5%;
+    text-align: center;
+}
+.row{
+    flex-wrap: nowrap;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+}
+.rowDate{
+   flex: 1;
+   border: 1px solid white;
+   width: auto;
+   margin: 0;
+   aspect-ratio: 1 / 1;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: large;
+   transition-duration: 250ms;
+   border-radius: 9%;
+   position: relative;
+}
+.needSomeOne{
+    background-color: crimson;
+    position: absolute;
+    top: 7%;
+    right: 7%;
+    width: 25%;
+    height: 25%;
+    border-radius: 5px;
+    font-size: xx-small;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+.dayRow{
+    display: flex;
+    justify-content: space-between;
+}
+.dayName{
+    font-size: xx-small;
+    flex: 1;
+    margin: none;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+}
+.closedDate{
+    background: linear-gradient(to top right,#9e9e9e, #bdbdbd , #e0e0e0 );
+    color: white;
+}
+.normalDate{ 
+    background: linear-gradient(to top right, #00c853, #69f0ae);
+    color: white;
+}
+.reunionDate{
+    background: linear-gradient(to top right, #f9a825 ,#fdd835);
+    color: black;
+}
+.soireeDate{
+    background: linear-gradient(to top right, #4a148c, #d500f9);
+    color: white;
+}
+.calendar-month-bt{
+    background-color: #4a148c;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 7px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.calendar-month-bt:hover{
+    cursor: pointer;
+}
+@media (max-width: 725px) {
+    
+    #calendarBtContainer{
+        width: 95%;
+        justify-content: space-between;
+        margin: 2.5%;
+    }
+
+}
+.isNotes{
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 5px;
+    font-size: xx-small;
+    margin: 0;
+    background-color: black;
+    color: white;
+    vertical-align: center;
+}
+/*
+@media (min-width: 425px) {
+    .row{
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+}
+@media (min-width: 726px) {
+    .row{
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+}*/

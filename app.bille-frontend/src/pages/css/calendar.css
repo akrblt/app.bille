@@ -1,0 +1,18 @@
+
+#calendar-open{
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    height: 75vh;
+}
+#calendar-open > div{
+  width: 50%;
+}
+nav {
+  flex-shrink: 0;
+}
+@media screen and (max-width: 768px){
+  #calendar-open>div{
+    width: 100%;
+  }
+}

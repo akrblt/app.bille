@@ -1,0 +1,35 @@
+#notes-textarea{
+    background-color: white;
+    color: black;
+    height: 70vh;
+}
+#no-infos{
+    text-align: center;
+}
+.notes-bt2{
+   display:flex;
+    justify-content: center;  
+}
+.notes-bt{
+    width: 100%;
+    display:flex;
+    justify-content: right;
+    padding: 7px;
+}
+.nt-cont{
+    margin-bottom: 15px;
+}
+#notesss{
+    margin-top: 10px;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1e88e5;
+    color: white;
+    font-weight: bold;
+}
+#notesss:hover{
+    cursor: pointer;
+}

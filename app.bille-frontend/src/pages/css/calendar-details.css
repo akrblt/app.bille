@@ -1,0 +1,118 @@
+@media screen and (max-width: 768px){
+  #calendar-open>div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+  }
+}
+
+#CalendarDetails{
+    z-index: 10000;
+    height: 100%;
+    width: 90%;
+    color: white;
+    background-color: #282c34;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin-top: 8vh;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 10px;
+    padding-top: 10px;
+}
+.title1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    font-weight: bold;
+    padding: 2%;
+    margin:0;
+    background-color: #66bb6a  ;
+    color: #282c34;
+    border: 2px solid #66bb6a  ;
+    font-size: large;
+}
+.statusAndHoraires{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.statusAndHoraires > div{
+    width: 50%;
+    text-align: center;
+    vertical-align: center;
+}
+.label-sub{
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+.white{
+    background-color: white;
+    color: black;
+}
+.orange{
+    background-color: #ffab00;
+    color: #282c34;
+}
+#header-details-buttons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#change-page-bt{
+    text-align: center;
+    margin: 7px;
+}
+#bt-goTo-update{
+    background-color: white;
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 5px;
+    font-size: x-large;
+}
+#bt-goTo-update:hover{
+    background-color: white;
+    cursor: pointer;
+}
+
+.update-info-notes{
+    padding: 10px;
+    margin: 15px;
+    background-color: #039be5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.update-info-notes:hover{
+    cursor: pointer;
+}
+#header-update-buttons{
+    width: 100%;
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.close-update-bt{
+   height: 45px;
+   width: 45px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #ef5350 ;
+}
+.close-update-bt:hover{
+    cursor: pointer;
+}

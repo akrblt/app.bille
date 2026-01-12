@@ -1,0 +1,11 @@
+
+#status-select{
+    margin: auto;
+    background-color: aliceblue;
+    z-index: 99999999;
+    display: flex;
+    width: min-content;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 9px;
+}
