@@ -34,7 +34,7 @@ const CalendarDetails: FunctionComponent = () => {
     load()
   }, [id])
 
-  /** Responsable değiştiğinde */
+  /* */
   const handleChangeResponsable = (responsableId: number) => {
     setShowInfos((prev: any) => ({
       ...prev,

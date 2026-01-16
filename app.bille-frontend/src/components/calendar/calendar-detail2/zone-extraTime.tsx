@@ -1,3 +1,4 @@
+// src/components/calendar/calendar-detail2/zone-extraTime.tsx
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import UserConnexion from '../../../helpers/user-connexion'
 import ShowManager from '../../../domain/show/ShowManager'
@@ -22,18 +23,20 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
   const [concernedTimes, setConcernedTimes] = useState<ExtraTime[]>([])
   const [userIn, setUserIn] = useState(false)
 
+  // Load show details
   useEffect(() => {
     const loadShow = async () => {
       try {
         const show = await ShowManager.load(idShow)
         setShowInfos(show)
       } catch (e) {
-        console.error('Erreur lors du chargement du show:', e)
+        console.error('Error loading show:', e)
       }
     }
     loadShow()
   }, [idShow])
 
+  // Filter extra times for the current type (opening/closure)
   useEffect(() => {
     if (!showInfos) return
 
@@ -45,7 +48,7 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
     setUserIn(filteredTimes.some(t => t.idUser === UserConnexion.myUserId()))
   }, [type, showInfos])
 
-  const handleExtraTimeSubscribtion = async (status: 'add' | 'remove') => {
+  const handleExtraTimeSubscription = async (status: 'add' | 'remove') => {
     if (!showInfos) return
 
     try {
@@ -62,15 +65,17 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
       } else {
         const userEntry = concernedTimes.find(t => t.idUser === idUser)
         if (!userEntry || !userEntry.idExtraTime) return
+        // ✅ Updated call with showId + extraTimeId
         updatedShow = await ShowManager.removeUserFromExtraTime(
+          showInfos.id,
           userEntry.idExtraTime
         )
       }
 
       if (updatedShow) setShowInfos(updatedShow)
     } catch (e) {
-      console.error('Erreur ExtraTime:', e)
-      window.alert("Oups, il y a eu un soucis, réessayez plus tard")
+      console.error('ExtraTime Error:', e)
+      window.alert("Oups, there was an error. Please try again later.")
     }
   }
 
@@ -81,11 +86,11 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
       <div className="extra-tit">
         <h6><strong>{timeType}</strong></h6>
         {!userIn ? (
-          <button onClick={() => handleExtraTimeSubscribtion('add')}>
+          <button onClick={() => handleExtraTimeSubscription('add')}>
             S'inscrire
           </button>
         ) : (
-          <button onClick={() => handleExtraTimeSubscribtion('remove')}>
+          <button onClick={() => handleExtraTimeSubscription('remove')}>
             Désinscrire
           </button>
         )}
