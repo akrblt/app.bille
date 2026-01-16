@@ -1,108 +1,103 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import UserConnexion from "../../../helpers/user-connexion";
-import SetRequests from "../../../services/setters";
+import React, { FunctionComponent, useEffect, useState } from 'react'
+import UserConnexion from '../../../helpers/user-connexion'
+import ShowManager from '../../../domain/show/ShowManager'
+import Show from '../../../domain/show/Show'
 import './css/extratime.css'
 
-type User = {
-    idUser: number,
-    firstname: string
+type ExtraTime = {
+  idExtraTime: number | null
+  idUser: number
+  firstname: string
+  type: 'opening' | 'closure'
 }
 
 type Props = {
-    idShow: number,
-    type: string,
-    times: ExtraTime[]
-    //handleAddUserToExtraTime: () => Promise<void>
+  idShow: number
+  type: 'opening' | 'closure'
 }
-type ExtraTime = {
-    idExtraTime: number | null, 
-    idUser: number, 
-    firstname: string, 
-    type: string
-}
-const ExtraTimeZone: FunctionComponent<Props> = ({ type, times, idShow }) => {
-    const [timeType, setTimeType] = useState<string>(null!)
-    const [concernedTimes, setConcernedTimes] = useState<ExtraTime[]>(null!)
-    const [userIn, setUserIn] = useState<boolean>(false)
 
-    useEffect(() => {
-        switch(type){
-            case 'opening': 
-                setTimeType('Ouverture')
-                break
-            case 'closure': 
-                setTimeType('Fermeture')
-                break
-        }
-        const filtredTimes: ExtraTime[] = times.filter((time: ExtraTime) => time.type === type )
-        const iAmIn: boolean = filtredTimes.some((thisTime: ExtraTime) => thisTime.idUser === (UserConnexion.getUserData())?.idUser)
-        setConcernedTimes(filtredTimes)   
-        setUserIn(iAmIn)
-    }, [type, times])
+const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
+  const [showInfos, setShowInfos] = useState<Show | null>(null)
+  const [timeType, setTimeType] = useState('')
+  const [concernedTimes, setConcernedTimes] = useState<ExtraTime[]>([])
+  const [userIn, setUserIn] = useState(false)
 
-    const handleExtraTimeSubscribtion = async (idExtraTime: number | null, type: string, status: string) => {
-        try{
-        const idUser = UserConnexion.getUserData().idUser
-        let doAction: boolean = 
-            (status === 'add') ? 
-            await SetRequests.setUserToExtraTime(idUser, idShow, type)
-            : (status === 'remove') ?
-            await SetRequests.unSetUserToExtraTime(idExtraTime)
-            : false
-        console.log("doAction : ", doAction)
-        if(doAction && status === 'add'){
-            setConcernedTimes(prev => [...(prev ?? []), {
-                idExtraTime: null,
-                idUser: UserConnexion.myUserId(),
-                firstname: UserConnexion.myLogin(),
-                type: type
-            }]);
-            setUserIn(true)
-        }
-        else if(doAction && status === 'remove') console.log("echo")
-        const msg = !doAction ? "Oups, il y a eu un soucis, réessayez plus tard" : "Ca joue !"
-        window.location.reload()
-        window.alert(msg)
-}catch(e){
-    console.log("e : ", e)
-}
+  useEffect(() => {
+    const loadShow = async () => {
+      try {
+        const show = await ShowManager.load(idShow)
+        setShowInfos(show)
+      } catch (e) {
+        console.error('Erreur lors du chargement du show:', e)
+      }
     }
-    
-    return (
-        <div id='extraTimes_container'>
-            <div className="extra-tit">
-                <h6><strong>{ timeType }</strong></h6>
-                {   // buttons
-                    !userIn ? <button onClick={() => handleExtraTimeSubscribtion(null, type, 'add')} className="subscr-user subscribe">S'inscrire</button> 
-                    : userIn ? <button onClick={() => handleExtraTimeSubscribtion(concernedTimes[0].idExtraTime, type, 'remove')} className="subscr-user">Désinscrire</button>
-                    : null
-                }
-            </div>
-            <hr className="lin"/>
-            <div className="users-extra">
-                {   // users
-                    concernedTimes ? concernedTimes.map((user: User, index: number) => {
-                        return <p key={index} className="user-firstname">{ user.firstname }</p>
-                    }) : null
-                }
-            </div>
-            <hr className="lin" />
-        </div>
-    )
-}
-export default ExtraTimeZone
+    loadShow()
+  }, [idShow])
 
-/*
-    return (<></>)/*
-        <div id="extratime-container">
-            <label>{ timeType } : </label>
-            <div className='usersZone'>
-                { !concernedTimes || concernedTimes.length <= 0 ? <p>Personne :(</p>  :           
-                    concernedTimes.map((time: ExtraTime) => {
-                        return <p key={time.idExtraTime} className='userExtra'>{time.firstname}</p> 
-                    })
-                }
-            </div>
-            <button onClick={() => handleAddUserToExtraTime(newTime: ExtraTime, idShow: number, type: string)}
-        </div>
-    )*/
+  useEffect(() => {
+    if (!showInfos) return
+
+    setTimeType(type === 'opening' ? 'Ouverture' : 'Fermeture')
+    const filteredTimes =
+      showInfos.extraTimes?.filter(t => t.type === type) ?? []
+
+    setConcernedTimes(filteredTimes)
+    setUserIn(filteredTimes.some(t => t.idUser === UserConnexion.myUserId()))
+  }, [type, showInfos])
+
+  const handleExtraTimeSubscribtion = async (status: 'add' | 'remove') => {
+    if (!showInfos) return
+
+    try {
+      const idUser = UserConnexion.myUserId()
+      let updatedShow: Show | null = null
+
+      if (status === 'add') {
+        updatedShow = await ShowManager.addUserToExtraTime(
+          showInfos.id,
+          idUser,
+          UserConnexion.myLogin(),
+          type
+        )
+      } else {
+        const userEntry = concernedTimes.find(t => t.idUser === idUser)
+        if (!userEntry || !userEntry.idExtraTime) return
+        updatedShow = await ShowManager.removeUserFromExtraTime(
+          userEntry.idExtraTime
+        )
+      }
+
+      if (updatedShow) setShowInfos(updatedShow)
+    } catch (e) {
+      console.error('Erreur ExtraTime:', e)
+      window.alert("Oups, il y a eu un soucis, réessayez plus tard")
+    }
+  }
+
+  if (!showInfos) return null
+
+  return (
+    <div id="extraTimes_container">
+      <div className="extra-tit">
+        <h6><strong>{timeType}</strong></h6>
+        {!userIn ? (
+          <button onClick={() => handleExtraTimeSubscribtion('add')}>
+            S'inscrire
+          </button>
+        ) : (
+          <button onClick={() => handleExtraTimeSubscribtion('remove')}>
+            Désinscrire
+          </button>
+        )}
+      </div>
+
+      <div className="users-extra">
+        {concernedTimes.length > 0
+          ? concernedTimes.map(u => <p key={u.idUser}>{u.firstname}</p>)
+          : <p>Personne :(</p>}
+      </div>
+    </div>
+  )
+}
+
+export default ExtraTimeZone

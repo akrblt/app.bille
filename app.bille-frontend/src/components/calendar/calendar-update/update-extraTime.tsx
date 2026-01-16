@@ -1,98 +1,131 @@
-import { get } from "http";
 import { FunctionComponent, useEffect, useState } from "react";
 import GetRequests from "../../../services/getters";
 import SetRequests from "../../../services/setters";
+import UserConnexion from "../../../helpers/user-connexion";
 
 type ExtraTime = {
-    idExtraTime: number | null, 
-    idUser: number, 
-    firstname: string, 
-    type: string
-}
+  idExtraTime: number | null;
+  idUser: number;
+  firstname: string;
+  type: string;
+};
+
 type ListedUser = {
-    idUser: number,
-    firstname: string
-}
+  idUser: number;
+  firstname: string;
+};
+
 type Props = {
-    extraTimes: ExtraTime[],
-    idShow: number
-}
+  extraTimes: ExtraTime[];
+  idShow: number;
+  type: string; // "opening" ou "closure"
+};
 
-const UpdateExtraTime: FunctionComponent<Props> = ({ extraTimes }) => {
-    const [userList, setUserList] = useState<ListedUser[]>([])
-    const [usersShifted, setUserShifted] = useState<ExtraTime[]>([])
-    const [userToAdd, setUserToAdd] = useState<ListedUser | null>(null)
-    useEffect(() => {
-        const getAllUsers = async () => {        
-            const listOfUser: any = await GetRequests.getUserList()    
-            setUserList(listOfUser)
-        }
-        getAllUsers()
-        setUserShifted(extraTimes)
-    }, [])
+const UpdateExtraTime: FunctionComponent<Props> = ({
+  extraTimes,
+  idShow,
+  type,
+}) => {
+  const [userList, setUserList] = useState<ListedUser[]>([]);
+  const [usersShifted, setUsersShifted] = useState<ExtraTime[]>([]);
+  const [userToAdd, setUserToAdd] = useState<number | null>(null);
+  const [message, setMessage] = useState<string>("");
 
-    const HandleRemoveUser = async (idExtraTime: number | null) => {
-        if(!idExtraTime){
-            window.alert("Oups, il y a eu une erreur réessayez.")
-            window.location.reload()
-            return
-        }
-        const sendDelete: boolean = await SetRequests.unSetUserToExtraTime(idExtraTime)
-        const msg = sendDelete ? "Utilisateur supprimé avec succès" : "Oups il y a eu un soucis, veuillez réessayer plus tard"
-        if(sendDelete){
-            const shifted: ExtraTime[] = usersShifted.filter((user: ExtraTime) => user.idExtraTime === idExtraTime)
-            setUserShifted(shifted)
-            window.location.reload()
-        }
+  // 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const list: ListedUser[] = await GetRequests.getUserList();
+      setUserList(list ?? []);
+    };
+    fetchUsers();
+    setUsersShifted(extraTimes ?? []);
+  }, [extraTimes]);
 
-        window.alert(msg)
+  // delete user
+  const handleRemoveUser = async (idExtraTime: number | null) => {
+    if (!idExtraTime) return;
+    const result: boolean = await SetRequests.unSetUserToExtraTime(idExtraTime);
+    if (result) {
+      setUsersShifted((prev) =>
+        prev.filter((user) => user.idExtraTime !== idExtraTime)
+      );
+      setMessage("Utilisateur supprimé avec succès.");
+    } else {
+      setMessage("Oups, problème lors de la suppression. Réessayez.");
     }
-    const handleAddUser = async (idUser: number, firstname: string,  idShow: number, type: string) => {
-        const sendReq: boolean = await SetRequests.setUserToExtraTime(idUser, idShow, type)
-        const msg = sendReq ? "utilisateurinscrit avec succès" : "Oup, il y a eu un soucis, réessayez plus tard"
-        if(sendReq){
-            setUserShifted(prev => [...(prev ?? []), {
-                idExtraTime: null,
-                idUser: idUser,
-                firstname: firstname,
-                type: type
-            }]);
-        }
-        window.alert(msg)
+  };
+
+  // add user
+  const handleAddUser = async () => {
+    if (!userToAdd) {
+      setMessage("Veuillez sélectionner un utilisateur.");
+      return;
+    }
+    const user = userList.find((u) => u.idUser === userToAdd);
+    if (!user) {
+      setMessage("Utilisateur invalide.");
+      return;
     }
 
-    return (
-        <>
-            <div id="shifted-users">
-                {
-                    !usersShifted ? 'Personne' :
-                    usersShifted.map((user: ExtraTime, index: number) => {
-                        return (<>
-                            {
-                                user.idExtraTime ? null :<div className="user-capsule" key={index}>
-                                <p> { user.firstname } </p>
-                                <button onClick={() => HandleRemoveUser(user.idExtraTime)}>X</button>
-                            </div>
-                            }
-                        </>)
-                    })
-                }
+    const result: boolean = await SetRequests.setUserToExtraTime(
+      user.idUser,
+      idShow,
+      type
+    );
+
+    if (result) {
+      setUsersShifted((prev) => [
+        ...prev,
+        { idExtraTime: null, idUser: user.idUser, firstname: user.firstname, type },
+      ]);
+      setMessage(`Utilisateur ${user.firstname} inscrit avec succès !`);
+    } else {
+      setMessage("Oups, problème lors de l'inscription. Réessayez.");
+    }
+  };
+
+  return (
+    <div className="update-extra-time">
+      <h4>{type === "opening" ? "Ouverture" : "Fermeture"}</h4>
+
+      {/* users list */}
+      <div id="shifted-users">
+        {usersShifted.length === 0 ? (
+          <p>Personne pour cette période</p>
+        ) : (
+          usersShifted.map((user) => (
+            <div className="user-capsule" key={user.idUser}>
+              <p>{user.firstname}</p>
+              {user.idExtraTime && (
+                <button onClick={() => handleRemoveUser(user.idExtraTime)}>
+                  X
+                </button>
+              )}
             </div>
-            {/*<div className="add-user-form">
-                <div className="subscribe-benevole">
-                    <select className="select-add-user" value={!userToAdd ? "" : userToAdd.idUser} onChange={selectUserToAdd}>
-                        <option value="">-</option>
-                        {
-                            userList.map((user: ListedUser, index: number) => {
-                                ////console.log("user ::: ", user)
-                                return <option value={user.idUser} key={index}>{user.firstname}</option>
-                            })
-                        }
-                    </select>  
-                    <button onClick={() => handleAddUser(userToAdd)}>inscrire</button>                
-                </div>
-            </div>*/}
-        </>
-    )
-}
-export default UpdateExtraTime
+          ))
+        )}
+      </div>
+
+      {/* add user*/}
+      <div className="add-user-form">
+        <select
+          value={userToAdd ?? ""}
+          onChange={(e) => setUserToAdd(parseInt(e.target.value))}
+        >
+          <option value="">Sélectionner un utilisateur</option>
+          {userList.map((user) => (
+            <option key={user.idUser} value={user.idUser}>
+              {user.firstname}
+            </option>
+          ))}
+        </select>
+        <button onClick={handleAddUser}>Inscrire</button>
+      </div>
+
+      {/* mesaj area */}
+      {message && <p className="message">{message}</p>}
+    </div>
+  );
+};
+
+export default UpdateExtraTime;
