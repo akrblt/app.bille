@@ -26,7 +26,7 @@ apiRouter.use(authenticateToken)
 // Exemple de montage d’une route dans /api
 require('./routes2/get-datesAndStatusOfRecordShowOfGivenMonth.js')(app)
 require('./routes2/set-year-template.js')(app)
-require('./routes2/get-dateInfos.js')(app)
+require('./routes2/get-dateInfos.js')(apiRouter)
 require('./routes2/set-user-to-shift-insert.js')(app)
 require('./routes2/set-user-to-shift-delete.js')(app)
 require('./routes2/set-update-show.js')(app)

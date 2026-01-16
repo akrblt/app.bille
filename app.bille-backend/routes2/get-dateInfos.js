@@ -1,6 +1,6 @@
 const { getAllShiftsOfAshow, getShowById, getExtraTimesOfShow, getAllInfosOfShow } = require('../helpers/getters')
-module.exports = (app) => {
-    app.get('/api/getDateInfos', async function (req, res) {
+module.exports = (router) => {
+    router.get('/api/getDateInfos', async function (req, res) {
         try{
             ////////console.log("getDateInfos : ", req.query)
             const idShow = req.query.idShow
