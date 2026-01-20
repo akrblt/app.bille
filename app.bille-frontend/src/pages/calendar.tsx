@@ -9,6 +9,9 @@ const Calendar: FunctionComponent = () => {
     const naviguate = useNavigate()
 
     useEffect(() => {
+        //console.log(UserConnexion.iAmConnected());
+        //console.log(UserConnexion.getUserData());
+
         if(UserConnexion.iAmConnected() === false) naviguate(`/login`)
         if(selectedDate != null) naviguate(`/calendar/details/${selectedDate}`)
     }, [selectedDate])
@@ -23,4 +26,6 @@ const Calendar: FunctionComponent = () => {
             </div>
     )
 }
+
+// console.log(UserConnexion.iAmConnected());
 export default Calendar

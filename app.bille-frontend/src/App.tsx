@@ -1,4 +1,4 @@
-import React, { FunctionComponent , useEffect } from 'react';
+import React, { FunctionComponent , useEffect ,useState} from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
@@ -14,16 +14,23 @@ import Login from './pages/login';
 import UserConnexion from './helpers/user-connexion';
 import Recap from './pages/recap';
 
+
 // Nouveau composant pour gérer conditionnellement le layout
 const AppContent: FunctionComponent = () => {
   const location = useLocation();
 
+console.log("Login olmuş mu?", UserConnexion.iAmConnected());
+console.log("Token ve kullanici bilgisi:", UserConnexion.getUserData());
+
+  //materialize sidenav init
   useEffect(() => {
     const elems = document.querySelectorAll('.sidenav');
     M.Sidenav.init(elems);
   }, []);
 
+
   const showHeader = location.pathname !== '/login';
+  // admin level control ancienne method
   const myAdminLevel: number | null = UserConnexion.myAdminLevel() 
 
   return (
@@ -37,9 +44,9 @@ const AppContent: FunctionComponent = () => {
                   <i className="material-icons">menu</i>
                 </a>
                 <ul id="nav-mobile" className="left hide-on-med-and-down">                                 
-                  { myAdminLevel === 1 ? <li className="tab"><Link to="/planification">Planification</Link></li> : null }
-                  { myAdminLevel === 1 ? <li className="tab"><Link to="/users">Utilisateurs</Link></li> : null }   
-                  { myAdminLevel === 1 ? <li className="tab"><Link to="/recap">Récap</Link></li> : null}
+                  { myAdminLevel === 1 && <li className="tab"><Link to="/planification">Planification</Link></li>  }
+                  { myAdminLevel === 1 && <li className="tab"><Link to="/users">Utilisateurs</Link></li>  }   
+                  { myAdminLevel === 1 && <li className="tab"><Link to="/recap">Récap</Link></li> }
                   <li className="tab"><Link to='/calendar'>Calendrier</Link></li>
                   <li className="tab"><Link to="/myInfos">Mes infos</Link></li>
                 </ul>
@@ -47,9 +54,9 @@ const AppContent: FunctionComponent = () => {
             </nav>
           </div>
           <ul className="sidenav" id="mobile-menu">           
-            { myAdminLevel === 1 ? <li><Link to="/planification">Planification</Link></li> : null }
-            { myAdminLevel === 1 ? <li><Link to="/users">Utilisateurs</Link></li> : null }
-            { myAdminLevel === 1 ? <li><Link to="/recap">Récap</Link></li> : null }
+            { myAdminLevel === 1 && <li><Link to="/planification">Planification</Link></li>  }
+            { myAdminLevel === 1 && <li><Link to="/users">Utilisateurs</Link></li>  }
+            { myAdminLevel === 1 && <li><Link to="/recap">Récap</Link></li>  }
             <li><Link to="/calendar">Calendrier</Link></li>
             <li><Link to="/myInfos">Mes infos</Link></li>
           </ul>

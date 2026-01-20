@@ -29,6 +29,9 @@ const CalendarDetails: FunctionComponent = () => {
   // 🔐 Auth guard (CDC dışı ama mevcut davranış korunuyor)
   useEffect(() => {
     if (!UserConnexion.iAmConnected()) {
+      console.log(UserConnexion.iAmConnected());
+      console.log(UserConnexion.getUserData());
+
       navigate('/login')
     }
   }, [navigate])
@@ -79,7 +82,7 @@ const CalendarDetails: FunctionComponent = () => {
 
   const handleAddUserToExtraTime = async (
   newTime: ExtraTime,
-  type: 'opening' | 'closure'
+  type: 'ouverture' | 'fermeture'
 ) => {
   if (!showInfos) return
 
@@ -87,7 +90,6 @@ const CalendarDetails: FunctionComponent = () => {
     const updatedShow = await ShowManager.addUserToExtraTime(
       showInfos.id,      // showId
       newTime.idUser,    // userId
-      newTime.firstname, // userName
       type               // 'opening' | 'closure'
     )
     setShowInfos(updatedShow)
@@ -143,7 +145,7 @@ const CalendarDetails: FunctionComponent = () => {
         {(showInfos.status !== 'ferme' &&
           showInfos.status !== 'reunion') && (
           <ExtraTimeZone
-            type="opening"
+            type="ouverture"
             idShow={showInfos.id}
             
           />
@@ -154,7 +156,7 @@ const CalendarDetails: FunctionComponent = () => {
         {(showInfos.status !== 'ferme' &&
           showInfos.status !== 'reunion') && (
           <ExtraTimeZone
-            type="closure"
+            type="fermeture"
             idShow={showInfos.id}
             
           />

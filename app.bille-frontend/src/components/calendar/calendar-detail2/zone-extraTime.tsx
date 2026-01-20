@@ -5,21 +5,23 @@ import ShowManager from '../../../domain/show/ShowManager'
 import Show from '../../../domain/show/Show'
 import './css/extratime.css'
 
+type ExtraTimeType = 'ouverture' | 'fermeture'
+
 type ExtraTime = {
   idExtraTime: number | null
   idUser: number
   firstname: string
-  type: 'opening' | 'closure'
+  type: ExtraTimeType
 }
 
 type Props = {
   idShow: number
-  type: 'opening' | 'closure'
+  type: ExtraTimeType
 }
 
 const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
   const [showInfos, setShowInfos] = useState<Show | null>(null)
-  const [timeType, setTimeType] = useState('')
+  const [label,setLabel] = useState('')
   const [concernedTimes, setConcernedTimes] = useState<ExtraTime[]>([])
   const [userIn, setUserIn] = useState(false)
 
@@ -28,22 +30,23 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
     const loadShow = async () => {
       try {
         const show = await ShowManager.load(idShow)
+        console.log('🔹 Loaded show full:', JSON.stringify(show, null, 2)) 
         setShowInfos(show)
       } catch (e) {
         console.error('Error loading show:', e)
       }
     }
-    loadShow()
+    if (idShow) loadShow()
   }, [idShow])
 
   // Filter extra times for the current type (opening/closure)
   useEffect(() => {
     if (!showInfos) return
 
-    setTimeType(type === 'opening' ? 'Ouverture' : 'Fermeture')
+    setLabel(type === 'ouverture' ? 'Ouverture' : 'Fermeture')
     const filteredTimes =
       showInfos.extraTimes?.filter(t => t.type === type) ?? []
-
+      console.log(`🔹 Filtered extraTimes for ${type}:`, filteredTimes)
     setConcernedTimes(filteredTimes)
     setUserIn(filteredTimes.some(t => t.idUser === UserConnexion.myUserId()))
   }, [type, showInfos])
@@ -59,7 +62,7 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
         updatedShow = await ShowManager.addUserToExtraTime(
           showInfos.id,
           idUser,
-          UserConnexion.myLogin(),
+          
           type
         )
       } else {
@@ -84,7 +87,7 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
   return (
     <div id="extraTimes_container">
       <div className="extra-tit">
-        <h6><strong>{timeType}</strong></h6>
+        <h6><strong>{label}</strong></h6>
         {!userIn ? (
           <button onClick={() => handleExtraTimeSubscription('add')}>
             S'inscrire

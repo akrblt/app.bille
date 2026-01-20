@@ -19,20 +19,19 @@ export const showService = {
 
   // Add a user to extra time
   addExtraTime: async (
-    showId: number,
-    idUser: number,
-    firstname: string,
-    type: 'opening' | 'closure'
-  ) => {
-    const res = await http.post(`/set-user-to-extraTime-insert`, {
-      showId,
-      idUser,
-      firstname,
-      type
-    })
-    if (res.status === 'fail') throw new Error(res.error)
-    return res.data
-  },
+  fkShow: number,
+  idUser: number,
+  type: 'ouverture' | 'fermeture'
+) => {
+  const res = await http.post('/subscribeUserToExtraTime', {
+    fkShow,
+    idUser,
+    type
+  })
+  if (res.status === 'fail') throw new Error(res.error)
+  return res.data
+}
+,
 
   // Remove a user from extra time
   removeExtraTime: async (idExtraTime: number) => {

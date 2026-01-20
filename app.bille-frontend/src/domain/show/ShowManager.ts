@@ -7,6 +7,7 @@ export default class ShowManager {
   // Load show details
   static async load(showId: number): Promise<Show> {
     const data = await showService.getDetails(showId)
+    console.log('show:', showId);
     return new Show(data)
   }
 
@@ -26,10 +27,9 @@ export default class ShowManager {
   static async addUserToExtraTime(
     showId: number,
     userId: number,
-    userName: string,
-    type: 'opening' | 'closure'
+    type: 'ouverture' | 'fermeture'
   ): Promise<Show> {
-    await showService.addExtraTime(showId, userId, userName, type)
+    await showService.addExtraTime(showId, userId, type)
     const updated = await showService.getDetails(showId)
     return new Show(updated)
   }
@@ -52,4 +52,6 @@ export default class ShowManager {
     const data = await showService.changeResponsable(showId, newResponsableId)
     return new Show(data)
   }
+
+  
 }

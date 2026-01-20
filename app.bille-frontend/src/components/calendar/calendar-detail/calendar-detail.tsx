@@ -64,7 +64,7 @@ const CalendarDetails: FunctionComponent = () => {
 
       {showInfos.status !== 'ferme' && showInfos.status !== 'reunion' && (
         <ExtraTimeZone
-          type="closure"
+          type="fermeture"
           idShow={showInfos.id}
           
         />
