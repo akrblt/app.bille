@@ -1,8 +1,8 @@
 
 const ExtraTime = require('../models/extraTime')
 
-module.exports = (app) => {
-    app.post('/api/deleteUserToExtraTime', async (req, res) => {  
+module.exports = (router) => {
+    router.post('/set-user-to-extraTime-delete', async (req, res) => {  
         try{            
             const idExtraTime = req.body.idExtraTime
             console.log("delete : ", idExtraTime)

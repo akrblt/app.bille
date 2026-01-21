@@ -10,7 +10,12 @@ const app = express()
 const port = 3001
 
 // Middlewares
-app.use(cors({ origin: true, credentials: true }))
+app.use(cors({
+  origin: 'http://localhost:3000', // React port
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'], // Authorization ekledik
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}))
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -26,12 +31,12 @@ apiRouter.use(authenticateToken)
 // Exemple de montage d’une route dans /api
 require('./routes2/get-datesAndStatusOfRecordShowOfGivenMonth.js')(app)
 require('./routes2/set-year-template.js')(app)
-require('./routes2/get-dateInfos.js')(apiRouter)
+require('./routes2/get-dateInfos.js')(app)
 require('./routes2/set-user-to-shift-insert.js')(app)
 require('./routes2/set-user-to-shift-delete.js')(app)
 require('./routes2/set-update-show.js')(app)
-require('./routes2/set-user-to-extraTime-insert.js')(app)
-require('./routes2/set-user-to-extraTime-delete.js')(app)
+require('./routes2/set-user-to-extraTime-insert.js')(apiRouter)
+require('./routes2/set-user-to-extraTime-delete.js')(apiRouter)
 require('./routes2/set-ResponsableOfShow.js')(app)
 require('./routes2/get-specific-user.js')(app)
 require('./routes2/update-show.js')(app)
@@ -49,6 +54,8 @@ require('./routes2/set-shift-delete.js')(app)
 require('./routes2/get-recap.js')(app)
 
 app.use('/api', apiRouter)
+
+//app.use(express.static(path.join(__dirname, 'public')))
 
 // === CATCH-ALL pour React Router ===
 app.get('*', (req, res) => {
