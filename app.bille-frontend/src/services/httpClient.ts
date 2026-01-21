@@ -9,26 +9,28 @@ const client = axios.create({
 // 🔐 JWT interceptor
 client.interceptors.request.use(
   (config) => {
-    const user = UserConnexion.getUserData()
-    const token = user?.token
+    //const user = UserConnexion.getUserData()
+    const token = UserConnexion.getUserData()?.token
+    console.log('Authorization TOKEN:', token) // debug
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
 
     return config
-  },
-  (error) => Promise.reject(error)
+  }
+  //(error) => Promise.reject(error)
 )
 
 const handle = async (promise: Promise<any>) => {
   try {
     const res = await promise
-    return { status: 'success', data: res.data }
+   return { status: 'success', data: res.data }
   } catch (e: any) {
-    return {
-      status: 'fail',
-      error: e.response?.data?.error || e.response?.data?.msg || 'Server error',
+    console.error('HTTP ERROR:', e.response)
+  return {
+     status: 'fail',
+     error: e.response?.data?.error || e.response?.data?.msg || `HTTP ${e.response?.status}`,
     }
   }
 }

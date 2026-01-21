@@ -21,7 +21,7 @@ type Props = {
 
 const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
   const [showInfos, setShowInfos] = useState<Show | null>(null)
-  const [label,setLabel] = useState('')
+  const [label, setLabel] = useState('')
   const [concernedTimes, setConcernedTimes] = useState<ExtraTime[]>([])
   const [userIn, setUserIn] = useState(false)
 
@@ -30,7 +30,7 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
     const loadShow = async () => {
       try {
         const show = await ShowManager.load(idShow)
-        console.log('🔹 Loaded show full:', JSON.stringify(show, null, 2)) 
+        console.log('🔹 Loaded show full:', JSON.stringify(show, null, 2))
         setShowInfos(show)
       } catch (e) {
         console.error('Error loading show:', e)
@@ -39,14 +39,14 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
     if (idShow) loadShow()
   }, [idShow])
 
-  // Filter extra times for the current type (opening/closure)
+  // Filter extra times for the current type (ouverture / fermeture)
   useEffect(() => {
     if (!showInfos) return
 
     setLabel(type === 'ouverture' ? 'Ouverture' : 'Fermeture')
     const filteredTimes =
       showInfos.extraTimes?.filter(t => t.type === type) ?? []
-      console.log(`🔹 Filtered extraTimes for ${type}:`, filteredTimes)
+    console.log(`🔹 Filtered extraTimes for ${type}:`, filteredTimes)
     setConcernedTimes(filteredTimes)
     setUserIn(filteredTimes.some(t => t.idUser === UserConnexion.myUserId()))
   }, [type, showInfos])
@@ -59,16 +59,16 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
       let updatedShow: Show | null = null
 
       if (status === 'add') {
+        console.log('📤 Sending addExtraTime with:')
+        // Backend parametreleri ile birebir eşleşiyor
         updatedShow = await ShowManager.addUserToExtraTime(
-          showInfos.id,
+          showInfos.id, // Show class'ta idShow varsa bunu kullan
           idUser,
-          
           type
         )
       } else {
         const userEntry = concernedTimes.find(t => t.idUser === idUser)
         if (!userEntry || !userEntry.idExtraTime) return
-        // ✅ Updated call with showId + extraTimeId
         updatedShow = await ShowManager.removeUserFromExtraTime(
           showInfos.id,
           userEntry.idExtraTime
@@ -76,7 +76,7 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
       }
 
       if (updatedShow) setShowInfos(updatedShow)
-    } catch (e) {
+    } catch (e: any) {
       console.error('ExtraTime Error:', e)
       window.alert("Oups, there was an error. Please try again later.")
     }

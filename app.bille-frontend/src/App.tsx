@@ -19,8 +19,8 @@ import Recap from './pages/recap';
 const AppContent: FunctionComponent = () => {
   const location = useLocation();
 
-console.log("Login olmuş mu?", UserConnexion.iAmConnected());
-console.log("Token ve kullanici bilgisi:", UserConnexion.getUserData());
+console.log("Login ?", UserConnexion.iAmConnected());
+console.log("Token and user details:", UserConnexion.getUserData());
 
   //materialize sidenav init
   useEffect(() => {

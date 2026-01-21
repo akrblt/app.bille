@@ -1,9 +1,18 @@
+
+export type ExtraTimeType = 'ouverture' | 'fermeture';
+export type ExtraTime = {
+  idExtraTime: number | null
+  idUser: number
+  firstname: string
+  type: ExtraTimeType;
+}
+
 export default class Show {
   id: number
   status: string
   notes: string
   showResponsable: number | null
-  extraTimes: any[]
+  extraTimes: ExtraTime[]
 
   private rawDate: string
   private startHour?: string
@@ -11,18 +20,22 @@ export default class Show {
 
   constructor(raw: any) {
     this.id = raw.laBilleShowId ?? raw.id
-    this.status = raw.status
-    this.notes = raw.notes
-    this.showResponsable = raw.showResponsable
-    this.extraTimes = raw.extraTimes || []
+    this.status = raw.status ?? ''
+    this.notes = raw.notes ?? ''
+    this.showResponsable = raw.showResponsable ?? null
+    this.extraTimes = raw.extraTimes ?? []
 
-    this.rawDate = raw.date
+     this.rawDate = raw.date
     this.startHour = raw.startHour
     this.endHour = raw.endHour
   }
 
+   get date(): Date {
+    return new Date(this.rawDate)
+  }
+
   formatDateLabel(): string {
-    return new Date(this.rawDate).toLocaleDateString('fr-FR', {
+    return new Date(this.date).toLocaleDateString('fr-FR', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
@@ -30,8 +43,15 @@ export default class Show {
     })
   }
 
-  formatHoraires(): string {
-    if (!this.startHour || !this.endHour) return ''
-    return `${this.startHour} - ${this.endHour}`
+  getExtraTimesOfType(type: ExtraTimeType): ExtraTime[] {
+    return this.extraTimes.filter((t) => t.type === type);
+  }
+
+  addExtraTime(newTime: ExtraTime) {
+    this.extraTimes.push(newTime);
+  }
+
+  removeExtraTime(idExtraTime: number) {
+    this.extraTimes = this.extraTimes.filter((t) => t.idExtraTime !== idExtraTime);
   }
 }

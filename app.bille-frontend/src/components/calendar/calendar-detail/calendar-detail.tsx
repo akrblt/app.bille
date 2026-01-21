@@ -24,6 +24,8 @@ const CalendarDetails: FunctionComponent = () => {
       try {
         const result = await ShowManager.load(Number(id))
         setShowInfos(result)
+        
+
       } catch (error) {
         console.error('Erreur chargement show', error)
       } finally {
