@@ -36,6 +36,14 @@ const handle = async (promise: Promise<any>) => {
 }
 
 export default {
-  get: (url: string) => handle(client.get(url)),
-  post: (url: string, body: any) => handle(client.post(url, body)),
+get: (url: string) => handle(client.get(url)),
+
+  post: (url: string, body: any) =>
+    handle(client.post(url, body)),
+
+  put: (url: string, body: any) =>
+    handle(client.put(url, body)),
+
+  delete: (url: string) =>
+    handle(client.delete(url))
 }

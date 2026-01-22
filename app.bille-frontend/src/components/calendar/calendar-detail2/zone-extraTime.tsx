@@ -2,17 +2,8 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import UserConnexion from '../../../helpers/user-connexion'
 import ShowManager from '../../../domain/show/ShowManager'
-import Show from '../../../domain/show/Show'
+import Show, { ExtraTimeType, ExtraTime } from '../../../domain/show/Show'
 import './css/extratime.css'
-
-type ExtraTimeType = 'ouverture' | 'fermeture'
-
-type ExtraTime = {
-  idExtraTime: number | null
-  idUser: number
-  firstname: string
-  type: ExtraTimeType
-}
 
 type Props = {
   idShow: number
@@ -30,7 +21,7 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
     const loadShow = async () => {
       try {
         const show = await ShowManager.load(idShow)
-        console.log('🔹 Loaded show full:', JSON.stringify(show, null, 2))
+        console.log('🔹 Loaded show full:', show)
         setShowInfos(show)
       } catch (e) {
         console.error('Error loading show:', e)
@@ -39,16 +30,15 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
     if (idShow) loadShow()
   }, [idShow])
 
-  // Filter extra times for the current type (ouverture / fermeture)
+  // Update filtered extra times and user presence
   useEffect(() => {
     if (!showInfos) return
 
     setLabel(type === 'ouverture' ? 'Ouverture' : 'Fermeture')
-    const filteredTimes =
-      showInfos.extraTimes?.filter(t => t.type === type) ?? []
+    const filteredTimes = showInfos.getExtraTimesOfType(type)
     console.log(`🔹 Filtered extraTimes for ${type}:`, filteredTimes)
     setConcernedTimes(filteredTimes)
-    setUserIn(filteredTimes.some(t => t.idUser === UserConnexion.myUserId()))
+    setUserIn(showInfos.isUserInExtraTimes(UserConnexion.myUserId(), type))
   }, [type, showInfos])
 
   const handleExtraTimeSubscription = async (status: 'add' | 'remove') => {
@@ -59,20 +49,12 @@ const ExtraTimeZone: FunctionComponent<Props> = ({ idShow, type }) => {
       let updatedShow: Show | null = null
 
       if (status === 'add') {
-        console.log('📤 Sending addExtraTime with:')
-        // Backend parametreleri ile birebir eşleşiyor
-        updatedShow = await ShowManager.addUserToExtraTime(
-          showInfos.id, // Show class'ta idShow varsa bunu kullan
-          idUser,
-          type
-        )
+        console.log('📤 Adding user to extra time:', { idUser, type })
+        updatedShow = await ShowManager.addUserToExtraTime(showInfos.id, idUser, type)
       } else {
         const userEntry = concernedTimes.find(t => t.idUser === idUser)
         if (!userEntry || !userEntry.idExtraTime) return
-        updatedShow = await ShowManager.removeUserFromExtraTime(
-          showInfos.id,
-          userEntry.idExtraTime
-        )
+        updatedShow = await ShowManager.removeUserFromExtraTime(showInfos.id, userEntry.idExtraTime)
       }
 
       if (updatedShow) setShowInfos(updatedShow)

@@ -54,4 +54,8 @@ export default class Show {
   removeExtraTime(idExtraTime: number) {
     this.extraTimes = this.extraTimes.filter((t) => t.idExtraTime !== idExtraTime);
   }
+   isUserInExtraTimes(userId: number, type: ExtraTimeType): boolean {
+    return this.getExtraTimesOfType(type).some(t => t.idUser === userId)
+  }
+
 }
