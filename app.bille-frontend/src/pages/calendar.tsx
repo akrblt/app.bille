@@ -16,9 +16,18 @@ const Calendar: FunctionComponent = () => {
         if(selectedDate != null) naviguate(`/calendar/details/${selectedDate}`)
     }, [selectedDate])
 
+    // bug ici 
+   // const handleChangeSelectedDate = (newValue: number): void => {
+    //    setSelectedDate(newValue)
+  //  }
+
     const handleChangeSelectedDate = (newValue: number): void => {
+    setSelectedDate(null)
+    setTimeout(() => {
         setSelectedDate(newValue)
-    }
+    }, 0)
+}
+
     return(
             <div id='calendar-open'>     
                 <CalendarMonthPicker handleChangeSelectedDate={handleChangeSelectedDate} source='calendar'/>
