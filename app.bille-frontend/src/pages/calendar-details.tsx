@@ -19,6 +19,8 @@ const CalendarDetails: FunctionComponent = () => {
   const navigate = useNavigate()
 
   const [showInfos, setShowInfos] = useState<Show | null>(null)
+   const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   // Auth guard
   useEffect(() => {
@@ -27,9 +29,13 @@ const CalendarDetails: FunctionComponent = () => {
     }
   }, [navigate])
 
-  // Load show details
+  // Load show details (via ShowManager)
 useEffect(() => {
-  if (!idShow) return
+  if (!idShow) {
+    
+
+    return
+  } 
 
   const load = async () => {
     try {
@@ -52,11 +58,11 @@ useEffect(() => {
       console.log('📡 Fetch status:', res.status)
       console.log('📡 Content-Type:', res.headers.get('content-type'))
 
-      // ⛔ body SADECE BİR KEZ okunur
+      // body lier seulment une seul fois
       const text = await res.text()
       console.log('📦 RAW RESPONSE TEXT:', text)
 
-      // JSON değilse burada dur
+      // si n'est pas json arrete
       if (!res.headers.get('content-type')?.includes('application/json')) {
         throw new Error('Response is not JSON')
       }
@@ -155,3 +161,155 @@ useEffect(() => {
 }
 
 export default CalendarDetails
+
+/*
+
+import React, { FunctionComponent, useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+
+import Show from '../domain/show/Show'
+import ShowManager from '../domain/show/ShowManager'
+
+import StatusZone from '../components/calendar/calendar-detail2/zone-status'
+import ResponsableZone from '../components/calendar/calendar-detail2/zone-responsable'
+import Notes from '../components/calendar/calendar-detail2/notes-zone'
+import ShiftsContainer from '../components/calendar/calendar-detail2/shifts-container/shifts-container'
+import ExtraTimeZone from '../components/calendar/calendar-detail2/zone-extraTime'
+
+import UserConnexion from '../helpers/user-connexion'
+import './css/calendar-details.css'
+
+const CalendarDetails: FunctionComponent = () => {
+  const { idShow } = useParams<{ idShow: string }>()
+  const navigate = useNavigate()
+
+  const [showInfos, setShowInfos] = useState<Show | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // 🔐 Protection de la page (authentification)
+  // Si l'utilisateur n'est pas connecté, redirection vers la page de login
+  useEffect(() => {
+    if (!UserConnexion.iAmConnected()) {
+      navigate('/login')
+    }
+  }, [navigate])
+
+  // 📡 Chargement des informations du show via ShowManager
+  // (architecture conforme au cahier des charges)
+  useEffect(() => {
+    if (!idShow) return
+
+    const loadShow = async () => {
+      try {
+        const showId = Number(idShow)
+        const show = await ShowManager.load(showId)
+        setShowInfos(show)
+      } catch (err: any) {
+        console.error('Erreur chargement show:', err)
+        setError(err.message || 'Erreur inconnue')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadShow()
+  }, [idShow])
+
+  // 🔙 Retour à la vue calendrier
+  const handleCloseDetails = () => navigate('/calendar')
+
+  // 🛠️ Accès à la page de modification du show (admin)
+  const handleGoToUpdate = () => {
+    if (!showInfos) return
+    navigate(`/calendar/update/${showInfos.id}`)
+  }
+
+  // 👤 Changement du responsable de soirée
+  const handleChangeResponsable = async (newResponsable: number | null) => {
+    if (!showInfos) return
+    try {
+      const updatedShow = await ShowManager.changeResponsable(showInfos.id, newResponsable)
+      setShowInfos(updatedShow)
+      window.alert('Responsable mis à jour avec succès !')
+    } catch {
+      window.alert('Erreur lors de la mise à jour du responsable')
+    }
+  }
+
+  // ⏳ États de chargement et d’erreur
+  if (loading) return <p>Chargement...</p>
+  if (error) return <p className="error">{error}</p>
+  if (!showInfos) return null
+
+  return (
+    <div id="CalendarDetails">
+      <div id="header-details-buttons">
+        {UserConnexion.myAdminLevel() <= 2 && (
+          <button id="bt-goTo-update" onClick={handleGoToUpdate}>🛠️</button>
+        )}
+        <button onClick={handleCloseDetails} className="close-update-bt">X</button>
+      </div>
+
+      <div className="title1">{showInfos.formatDateLabel()}</div>
+
+      <div className="statusAndHoraires">
+        <div className="label-sub white">
+          <StatusZone status={showInfos.status} />
+        </div>
+        <div className="label-sub orange">{showInfos.id}</div>
+      </div>
+
+      // Zone responsable affichée uniquement pour les soirées
+      {showInfos.status === 'soiree' && (
+        <ResponsableZone
+          idShow={showInfos.id}
+          responsableId={showInfos.showResponsable}
+          handleChangeResponsable={handleChangeResponsable}
+        />
+      )}
+
+      // Notes liées au show 
+      <Notes showNotes={showInfos.notes} status={showInfos.status} />
+
+      // Extra time ouverture (si le show n'est pas fermé ou réunion)
+      {(showInfos.status !== 'ferme' && showInfos.status !== 'reunion') && (
+        <ExtraTimeZone type="ouverture" idShow={showInfos.id} />
+      )}
+
+      // Liste des shifts 
+      <ShiftsContainer idShow={showInfos.id} />
+
+      // Extra time fermeture
+      {(showInfos.status !== 'ferme' && showInfos.status !== 'reunion') && (
+        <ExtraTimeZone type="fermeture" idShow={showInfos.id} />
+      )}
+    </div>
+  )
+}
+
+export default CalendarDetails
+
+
+*/
+
+
+/*
+
+les appels API passent par ShowManager,
+
+le composant React ne contient pas de logique réseau directe,
+
+séparation claire entre UI, domaine et services.
+
+Les commentaires expliquent maintenant clairement :
+
+la protection par authentification,
+
+le chargement des données,
+
+la navigation,
+
+les actions utilisateur (responsable, extra time, admin).
+
+*/

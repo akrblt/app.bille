@@ -7,10 +7,10 @@ const showService = {
 
   // Düzeltme burada
   addExtraTime: (showId: number, idUser: number, type: 'ouverture' | 'fermeture') =>
-    http.post('/api/set-user-to-extraTime-insert', { fkShow: showId, idUser, type }),
+    http.post('/set-user-to-extraTime-insert', { fkShow: showId, idUser, type }),
 
   removeExtraTime: (idExtraTime: number) =>
-    http.post('/api/set-user-to-extraTime-delete', { idExtraTime }),
+    http.post('/set-user-to-extraTime-delete', { idExtraTime }),
 }
 
 export default showService
